@@ -232,6 +232,47 @@ CONFIG_QSEECOM=y
 CONFIG_HDCP_QSEECOM=y
 CONFIG_UID_SYS_STATS=y
 # CONFIG_USB_EXT_TYPE_C_PERICOM is not set
+# CONFIG_USB_EXT_TYPE_C_TI is not set
+# CONFIG_TI_DRV2667 is not set
+# CONFIG_QPNP_MISC is not set
+# CONFIG_UID_SYS_STATS_DEBUG is not set
+# CONFIG_MEMORY_STATE_TIME is not set
+CONFIG_HAPTIC_DRV2605=y
+# CONFIG_HAPTIC_DRV2624 is not set
+CONFIG_ALSA_TO_H2W=y
+CONFIG_DROPBOX=y
+# CONFIG_MODS_USB_EXT_BRIDGE is not set
+# CONFIG_MODS_CODEC_BUS is not set
+# CONFIG_MODS_MODBUS_EXT is not set
+# CONFIG_HD3SS460_MUX is not set
+# CONFIG_USB3813 is not set
+# CONFIG_FSUSB42_MUX is not set
+# CONFIG_C2PORT is not set
+CONFIG_DTV_FC8300=y
+
+#
+# EEPROM support
+#
+# CONFIG_EEPROM_AT24 is not set
+# CONFIG_EEPROM_AT25 is not set
+# CONFIG_EEPROM_LEGACY is not set
+# CONFIG_EEPROM_MAX6875 is not set
+# CONFIG_EEPROM_93CX6 is not set
+# CONFIG_EEPROM_93XX46 is not set
+# CONFIG_CB710_CORE is not set
+
+#
+# Texas Instruments shared transport line discipline
+#
+# CONFIG_TI_ST is not set
+# CONFIG_SENSORS_LIS3_SPI is not set
+# CONFIG_SENSORS_LIS3_I2C is not set
+
+#
+# Altera FPGA firmware download module
+#
+# CONFIG_ALTERA_STAPL is not set
+CONFIG_MSM_QDSP6V2_CODECS=y
 CONFIG_MSM_ULTRASOUND=y
 CONFIG_SCSI=y
 CONFIG_BLK_DEV_SD=y
