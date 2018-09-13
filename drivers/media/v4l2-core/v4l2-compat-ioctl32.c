@@ -72,7 +72,6 @@ static int get_v4l2_window32(struct v4l2_window __user *kp,
 	    assign_in_user(&kp->global_alpha, &up->global_alpha) ||
 	    get_user(clipcount, &up->clipcount) ||
 	    put_user(clipcount, &kp->clipcount))
-		return -EFAULT;
 	if (clipcount > 2048)
 		return -EINVAL;
 	if (!clipcount)
@@ -165,6 +164,37 @@ static int __bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
 
 	if (get_user(type, &up->type))
 		return -EFAULT;
+
+	switch (type) {
+	case V4L2_BUF_TYPE_VIDEO_OVERLAY:
+	case V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY: {
+		u32 clipcount;
+
+		if (get_user(clipcount, &up->fmt.win.clipcount))
+			return -EFAULT;
+		if (clipcount > 2048)
+			return -EINVAL;
+		*size = clipcount * sizeof(struct v4l2_clip);
+		return 0;
+	}
+	default:
+		*size = 0;
+		return 0;
+	}
+}
+
+static int bufsize_v4l2_format(struct v4l2_format32 __user *up, u32 *size)
+{
+	if (!access_ok(VERIFY_READ, up, sizeof(*up)))
+		return -EFAULT;
+	return __bufsize_v4l2_format(up, size);
+}
+
+static int __get_v4l2_format32(struct v4l2_format __user *kp,
+			       struct v4l2_format32 __user *up,
+			       void __user *aux_buf, u32 aux_space)
+{
+	u32 type;
 
 	switch (type) {
 	case V4L2_BUF_TYPE_VIDEO_OVERLAY:
@@ -385,11 +415,15 @@ static int get_v4l2_plane32(struct v4l2_plane __user *up,
 
 	if (copy_in_user(up, up32, 2 * sizeof(__u32)) ||
 	    copy_in_user(&up->data_offset, &up32->data_offset,
+<<<<<<< HEAD
 			 sizeof(up->data_offset)) ||
 		copy_in_user(up->reserved, up32->reserved,
 				sizeof(up->reserved)) ||
 		copy_in_user(&up->length, &up32->length,
 				sizeof(__u32)))
+=======
+			 sizeof(up->data_offset)))
+>>>>>>> linux-rc1/linux-3.18.y
 		return -EFAULT;
 
 	switch (memory) {
@@ -420,8 +454,11 @@ static int put_v4l2_plane32(struct v4l2_plane __user *up,
 	unsigned long p;
 
 	if (copy_in_user(up32, up, 2 * sizeof(__u32)) ||
+<<<<<<< HEAD
 		copy_in_user(up32->reserved, up->reserved,
 				sizeof(up32->reserved)) ||
+=======
+>>>>>>> linux-rc1/linux-3.18.y
 	    copy_in_user(&up32->data_offset, &up->data_offset,
 			 sizeof(up->data_offset)))
 		return -EFAULT;

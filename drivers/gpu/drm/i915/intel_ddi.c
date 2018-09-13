@@ -3166,7 +3166,7 @@ void intel_ddi_get_config(struct intel_encoder *encoder,
 	default:
 		break;
 	}
-
+ 
 	if (intel_display_power_is_enabled(dev_priv, POWER_DOMAIN_AUDIO)) {
 		temp = I915_READ(HSW_AUD_PIN_ELD_CP_VLD);
 		if (temp & AUDIO_OUTPUT_ENABLE(intel_crtc->pipe))
@@ -3193,7 +3193,7 @@ void intel_ddi_get_config(struct intel_encoder *encoder,
 		dev_priv->vbt.edp_bpp = pipe_config->pipe_bpp;
 	}
 
-	intel_ddi_clock_get(encoder, pipe_config);
+	hsw_ddi_clock_get(encoder, pipe_config);
 }
 
 static bool intel_ddi_compute_config(struct intel_encoder *encoder,

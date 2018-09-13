@@ -1,8 +1,9 @@
 VERSION = 3
 PATCHLEVEL = 18
-SUBLEVEL = 122
-EXTRAVERSION =
-NAME = Shuffling Zombie Juror
+SUBLEVEL = 123
+EXTRAVERSION = -rc1
+NAME = Diseased Newt
+>>>>>>> linux-rc1/linux-3.18.y
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"

@@ -378,10 +378,8 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma, int is_pid)
 			goto done;
 		}
 
-		if (vma_get_anon_name(vma)) {
-			seq_pad(m, ' ');
-			seq_print_vma_name(m, vma);
-		}
+		if (is_stack(priv, vma))
+			name = "[stack]";
 	}
 
 done:
@@ -487,6 +485,7 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
 		unsigned long size, bool young, bool dirty)
 {
 	int mapcount;
+<<<<<<< HEAD
 
 	if (PageAnon(page))
 		mss->anonymous += size;
@@ -515,6 +514,36 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
 	}
 }
 
+=======
+
+	if (PageAnon(page))
+		mss->anonymous += size;
+
+	mss->resident += size;
+	/* Accumulate the size in pages that have been accessed. */
+	if (young || PageReferenced(page))
+		mss->referenced += size;
+	mapcount = page_mapcount(page);
+	if (mapcount >= 2) {
+		u64 pss_delta;
+
+		if (dirty || PageDirty(page))
+			mss->shared_dirty += size;
+		else
+			mss->shared_clean += size;
+		pss_delta = (u64)size << PSS_SHIFT;
+		do_div(pss_delta, mapcount);
+		mss->pss += pss_delta;
+	} else {
+		if (dirty || PageDirty(page))
+			mss->private_dirty += size;
+		else
+			mss->private_clean += size;
+		mss->pss += (u64)size << PSS_SHIFT;
+	}
+}
+
+>>>>>>> linux-rc1/linux-3.18.y
 static void smaps_pte_entry(pte_t *pte, unsigned long addr,
 		struct mm_walk *walk)
 {
@@ -527,6 +556,7 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
 		page = vm_normal_page(vma, addr, *pte);
 	} else if (is_swap_pte(*pte)) {
 		swp_entry_t swpent = pte_to_swp_entry(*pte);
+<<<<<<< HEAD
 
 		if (!non_swap_entry(swpent)) {
 			int mapcount;
@@ -542,6 +572,12 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
 				mss->swap_pss += (u64)PAGE_SIZE << PSS_SHIFT;
 			}
 		} else if (is_migration_entry(swpent))
+=======
+
+		if (!non_swap_entry(swpent))
+			mss->swap += PAGE_SIZE;
+		else if (is_migration_entry(swpent))
+>>>>>>> linux-rc1/linux-3.18.y
 			page = migration_entry_to_page(swpent);
 	} else if (pte_file(*pte)) {
 		if (pte_to_pgoff(*pte) != pgoff)
@@ -555,7 +591,33 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
 		mss->nonlinear += PAGE_SIZE;
 
 	smaps_account(mss, page, PAGE_SIZE, pte_young(*pte), pte_dirty(*pte));
+<<<<<<< HEAD
 }
+
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+		struct mm_walk *walk)
+{
+	struct mem_size_stats *mss = walk->private;
+	struct vm_area_struct *vma = mss->vma;
+	struct page *page;
+
+	/* FOLL_DUMP will return -EFAULT on huge zero page */
+	page = follow_trans_huge_pmd(vma, addr, pmd, FOLL_DUMP);
+	if (IS_ERR_OR_NULL(page))
+		return;
+	mss->anonymous_thp += HPAGE_PMD_SIZE;
+	smaps_account(mss, page, HPAGE_PMD_SIZE,
+			pmd_young(*pmd), pmd_dirty(*pmd));
+}
+#else
+static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+		struct mm_walk *walk)
+{
+=======
+>>>>>>> linux-rc1/linux-3.18.y
+}
+#endif
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,

@@ -59,7 +59,13 @@ void dvb_ringbuffer_init(struct dvb_ringbuffer *rbuf, void *data, size_t len)
 
 int dvb_ringbuffer_empty(struct dvb_ringbuffer *rbuf)
 {
-	return (rbuf->pread == rbuf->pwrite);
+	/* smp_load_acquire() to load write pointer on reader side
+	 * this pairs with smp_store_release() in dvb_ringbuffer_write(),
+	 * dvb_ringbuffer_write_user(), or dvb_ringbuffer_reset()
+	 *
+	 * for memory barriers also see Documentation/circular-buffers.txt
+	 */
+	return (rbuf->pread == smp_load_acquire(&rbuf->pwrite));
 }
 
 

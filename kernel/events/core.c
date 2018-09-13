@@ -8518,6 +8518,7 @@ static void perf_event_exit_cpu_context(int cpu)
 
 static void perf_event_start_swclock(int cpu)
 {
+<<<<<<< HEAD
 	struct perf_event_context *ctx;
 	struct pmu *pmu;
 	int idx;
@@ -8541,6 +8542,8 @@ static void perf_event_start_swclock(int cpu)
 
 static void perf_event_exit_cpu(int cpu)
 {
+=======
+>>>>>>> linux-rc1/linux-3.18.y
 	perf_event_exit_cpu_context(cpu);
 }
 #else

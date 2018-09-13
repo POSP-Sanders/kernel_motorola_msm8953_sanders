@@ -709,8 +709,7 @@ static inline struct usb_gadget *dev_to_usb_gadget(struct device *dev)
  */
 static inline size_t usb_ep_align(struct usb_ep *ep, size_t len)
 {
-	return max_t(size_t, 512,
-	       round_up(len, (size_t)le16_to_cpu(ep->desc->wMaxPacketSize)));
+	return round_up(len, (size_t)le16_to_cpu(ep->desc->wMaxPacketSize));
 }
 
 /**
