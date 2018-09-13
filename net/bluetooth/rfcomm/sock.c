@@ -362,21 +362,13 @@ static int rfcomm_sock_bind(struct socket *sock, struct sockaddr *addr, int addr
 
 	write_lock(&rfcomm_sk_list.lock);
 
-<<<<<<< HEAD
-	if (chan && __rfcomm_get_listen_sock_by_addr(chan, &sa.rc_bdaddr)) {
-=======
 	if (sa.rc_channel &&
 	    __rfcomm_get_listen_sock_by_addr(sa.rc_channel, &sa.rc_bdaddr)) {
->>>>>>> linux-rc1/linux-3.18.y
 		err = -EADDRINUSE;
 	} else {
 		/* Save source address */
 		bacpy(&rfcomm_pi(sk)->src, &sa.rc_bdaddr);
-<<<<<<< HEAD
-		rfcomm_pi(sk)->channel = chan;
-=======
 		rfcomm_pi(sk)->channel = sa.rc_channel;
->>>>>>> linux-rc1/linux-3.18.y
 		sk->sk_state = BT_BOUND;
 	}
 

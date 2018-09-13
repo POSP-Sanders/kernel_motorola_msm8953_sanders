@@ -142,8 +142,6 @@ static int self_check_in_wl_tree(const struct ubi_device *ubi,
 static int self_check_in_pq(const struct ubi_device *ubi,
 			    struct ubi_wl_entry *e);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_MTD_UBI_FASTMAP
 /**
  * update_fastmap_work_fn - calls ubi_update_fastmap from a work queue
@@ -183,7 +181,6 @@ static int ubi_is_fm_block(struct ubi_device *ubi, int pnum)
 }
 #endif
 
->>>>>>> linux-rc1/linux-3.18.y
 /**
  * wl_tree_add - add a wear-leveling entry to a WL RB-tree.
  * @e: the wear-leveling entry to add

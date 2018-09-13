@@ -6220,11 +6220,7 @@ static noinline void __schedule_bug(struct task_struct *prev)
 static inline void schedule_debug(struct task_struct *prev)
 {
 #ifdef CONFIG_SCHED_STACK_END_CHECK
-<<<<<<< HEAD
-	if (unlikely(task_stack_end_corrupted(prev)))
-=======
 	if (task_stack_end_corrupted(prev))
->>>>>>> linux-rc1/linux-3.18.y
 		panic("corrupted stack end detected inside scheduler\n");
 #endif
 	/*
